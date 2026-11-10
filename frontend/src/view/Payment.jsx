@@ -1,3 +1,4 @@
+import '../styles/checkout.css'
 import { useRef, useState } from 'react';
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { createPaymentIntent } from '../service/payment';
@@ -21,7 +22,6 @@ function CheckoutForm({cart}) {
 			return;
 		}
 
-		console.log('IN handleSubmit');
 		status.current = STATUS.LOADING;
 
 		const { error: submitError } = await elements.submit();
@@ -31,7 +31,7 @@ function CheckoutForm({cart}) {
 		}
 
 		// Create the PaymentIntent only after the customer submits payment details.
-		const [err, data] = createPaymentIntent(cart);
+		const [err, data] = await createPaymentIntent(cart);
 		if (err) {
 			status.current = STATUS.ERROR;
 			setMessage(err.message);
@@ -43,9 +43,8 @@ function CheckoutForm({cart}) {
 			elements,
 			clientSecret,
 			confirmParams: {
-				// return_url: "http://localhost:3000/complete",
+				return_url: `${window.location.origin}/catalogo`,
 			},
-			redirect: 'if_required',
 		});
 
 		// Successful payments redirect to the return_url. Display immediate errors.
@@ -54,24 +53,32 @@ function CheckoutForm({cart}) {
 			setMessage(error.message);
 			return;
 		}
+		localStorage.setItem('cart', '[]');
 		status.current = STATUS.LOADED;
 	};
 
 	const paymentElementOptions = {
-		layout: "accordion"
+		layout: 'accordion'
 	}
 
 	return (
-		<form id="payment-form" onSubmit={handleSubmit}>
-
-			<PaymentElement id="payment-element" options={paymentElementOptions} />
-			<button disabled={status.current === STATUS.LOADING || !stripe || !elements} id="submit">
-				<span id="button-text">
-					{status.current === STATUS.LOADING ? <div className="spinner" id="spinner"></div> : "Pay now"}
+		<form id='payment-form' onSubmit={handleSubmit}>
+			<PaymentElement id='payment-element'
+				options={paymentElementOptions}
+			/>
+			<button
+				id='submit'
+				disabled={status.current === STATUS.LOADING || !stripe || !elements}
+			>
+				<span id='button-text'>
+					{status.current === STATUS.LOADING ?
+						<div className='spinner' id='spinner'/>
+						: 'PAGAR'
+					}
 				</span>
 			</button>
 			{/* Show any error or success messages */}
-			{message && <div id="payment-message">{message}</div>}
+			{message && <div id='payment-message'>{message}</div>}
 		</form>
 	);
 }

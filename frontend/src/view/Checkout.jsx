@@ -8,27 +8,20 @@ const stripePromise = loadStripe(STRIPE_PUBLIC_KEY);
 
 function Checkout({ cart, amount, currency }) {
 	const appearance = {
-		theme: 'stripe',
+		theme: 'flat',
 	};
 	const loader = 'auto';
 
-	useEffect(() => {
-		console.log('IN handleSubmit');
-		console.log({cart, amount, currency});
-	},[])
-
 	return (
-		<>
-			<Elements options={{
-				mode: 'payment',
-				amount: amount,
-				currency: currency,
-				appearance,
-				loader,
-			}} stripe={stripePromise} >
-				<CheckoutForm cart={cart} />
-			</Elements>
-		</>
+		<Elements options={{
+			mode: 'payment',
+			amount: Math.round(amount * 100),
+			currency: currency,
+			appearance,
+			loader,
+		}} stripe={stripePromise} >
+			<CheckoutForm cart={cart} />
+		</Elements>
 	);
 }
 

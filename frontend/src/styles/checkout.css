@@ -1,0 +1,70 @@
+#payment-form {
+    width: min(100%, 750px);
+    margin: 30px auto;
+    padding: 28px;
+    background: var(--color-surface);
+    border-radius: 14px;
+    box-sizing: border-box;
+}
+
+#payment-form #payment-element {
+    margin-bottom: 24px;
+}
+
+#payment-form #submit {
+    width: 100%;
+    min-height: 48px;
+    padding: 13px 20px;
+    color: var(--color-btn-text);
+	background: var(--color-accent);
+	border: none;
+	border-radius: var(--radius-sm);
+	cursor: pointer;
+	box-shadow: var(--shadow-btn);
+	transition:
+		background 0.18s,
+		box-shadow 0.18s,
+		transform 0.1s;
+	letter-spacing: 0.01em;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+#payment-form #submit:hover:not(:disabled) {
+	background: var(--color-accent-hover);
+	box-shadow: 0 4px 14px rgba(79, 142, 247, 0.38);
+}
+
+#payment-form #submit:disabled {
+    background-color: #93a4c0;
+    cursor: default;
+    opacity: 0.7;
+}
+
+#payment-form #payment-message {
+    margin-top: 18px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    background-color: #fef2f2;
+    color: #b91c1c;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Loading spinner */
+#payment-form .spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: payment-spin 0.7s linear infinite;
+    vertical-align: middle;
+}
+
+@keyframes payment-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
